@@ -1,10 +1,11 @@
 import java.io.*;
 
 class Obj2obj {
-    private long countV=0;
+    private long countV = 0;
+    private long countVn = 0;
+    private long countVt = 0;
     private String fileName;
-    private String fileName1 = "test2.obj";
-    private int max = 0;
+
     Obj2obj(String fileName) {
         this.fileName = fileName;
     }
@@ -19,21 +20,16 @@ class Obj2obj {
             String line = reader.readLine();
             while (line != null) {
                 String[] strings = line.split(" ");
-                if (strings[0].equals("v")){
-                    countV++;
-                    fileWriter.write(line + '\n');
+                if (strings[0].equals("v")) {
+                    if (strings[1].equals("t")) {
+                        countVt++;
+                    } else if (strings[1].equals("n")) {
+                        countVn++;
+                    } else countV++;
+
                 }
-                StringBuilder sb = new StringBuilder();
-                if (strings[0].equals("f")){
-                    sb.append("f ");
-                    for (int i = 1; i < strings.length ; i++) {
-                        String[] values = strings[i].split("/");
-                        sb.append(values[0]);
-                        sb.append(" ");
-                    }
-                    sb.append("\n");
-                    fileWriter.write(sb.toString());
-                }
+                fileWriter.write(line + '\n');
+
                 line = reader.readLine();
             }
             fileWriter.close();
@@ -43,27 +39,31 @@ class Obj2obj {
     }
 
     protected void addSecondObj(final String path) {
-        int a = 0;
         try {
             File fileFirstObj = new File(path);
             FileReader fr = new FileReader(fileFirstObj);
-            FileWriter fileWriter = new FileWriter(fileName1);
+            FileWriter fileWriter = new FileWriter(fileName, true);
             BufferedReader reader = new BufferedReader(fr);
             String line = reader.readLine();
             while (line != null) {
                 String[] strings = line.split(" ");
-                if (strings[0].equals("v")){
+                if (strings[0].equals("v")) {
                     fileWriter.write(line + '\n');
                 }
                 StringBuilder sb = new StringBuilder();
-                if (strings[0].equals("f")){
+                if (strings[0].equals("f")) {
                     sb.append("f ");
-                    for (int i = 1; i < strings.length ; i++) {
+                    for (int i = 1; i < strings.length; i++) {
                         String[] values = strings[i].split("/");
-                        System.out.println(countV);
-                        a = (int) (Integer.valueOf(values[0]) + countV);
-                        if (a>max) max = a;
-                        sb.append(Integer.valueOf(values[0])+countV);
+                        sb.append(Integer.valueOf(values[0]) + countV);
+                        if (values.length != 1) {
+                            sb.append("/");
+                            sb.append(Integer.valueOf(values[1]) + countVt);
+                            if (values.length != 2) {
+                                sb.append("/");
+                                sb.append(Integer.valueOf(values[2]) + countVn);
+                            }
+                        }
                         sb.append(" ");
                     }
                     sb.append("\n");
@@ -72,7 +72,6 @@ class Obj2obj {
                 line = reader.readLine();
             }
             fileWriter.close();
-            System.out.println("max = " + max);
         } catch (IOException e) {
             e.printStackTrace();
         }

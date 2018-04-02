@@ -1,10 +1,13 @@
-import java.io.*;
+import javax.rmi.CORBA.Util;
 
 public class Launcher {
 
     public static void main(String[] args) {
-        Obj2obj obj2obj = new Obj2obj("test1.obj");
-        obj2obj.addFirstObj("res/head.obj");
-        obj2obj.addSecondObj("res/KaskaEbanaya.obj");
+
+//        Util.downsize(3, "Igor.obj");
+//        Util.offset(28.0f, 65.0f, -0.65f, "IgorTemp.obj");
+//        Util.rotate(1.0f,-1.0f,1.0f,"IgorTemp1.obj");
+//        Util.addObj2Obj("Igor1.obj","completeVersion.obj");
+
     }
 }
